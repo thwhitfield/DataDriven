@@ -2,7 +2,7 @@
 """
 Created on Tue Aug 13 10:43:07 2019
 
-@author: thwhi
+@author: Travis Whitfield
 """
 
 """

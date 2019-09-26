@@ -2,8 +2,15 @@
 """
 Created on Sun Aug 18 17:07:02 2019
 
-@author: thwhi
+@author: Travis Whitfield
 """
+
+"""
+This code has some preliminary analysis and a creates a preliminary recommender 
+system to return the 5 most similar aircraft to a given aircraft based on 
+their numerical specifications.
+"""
+
 
 import pandas as pd
 import numpy as np

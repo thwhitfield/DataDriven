@@ -2,27 +2,24 @@
 """
 Created on Fri Aug 16 11:02:20 2019
 
-@author: thwhi
+@author: Travis Whitfield
+"""
+
+"""
+This code cleans the scraped wiki data, primarily converting the entries
+for numerical values which have different units (converting all speeds to 
+knots and all aircraft length dimensions to ft, etc.) 
 """
 
 import pandas as pd
 import numpy as np
-import re
-import importlib
-import itertools
-import pickle
-import dateutil
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-df_infoboxes = pd.read_pickle('Script_Data/03_df_infoboxes.pkl')
-df_specs = pd.read_pickle('Script_Data/03_df_specs.pkl')
-
-data_cleaning = __import__('04_2_data_cleaning_functions')
+# Functions to clean scraped wiki data
 
 def convert_to_snake(string):
     ''' Converts a given string to snake_case'''
     s1 = string.replace(' ','_')
+    s1 = s1.replace(',','')
     s1 = s1.replace(u'\xa0', u'_')
     s1 = s1.lower()
 #    s1 = re.sub('(.)([A-Z][a-z]+)',r'\1_\2',s1)
@@ -146,18 +143,26 @@ def fix_dates(s):
     dates = combine_columns(dates,['date1','date2'])
     
     return(dates['date1'])
-    
-df_infoboxes=pd.read_pickle('03_df_infoboxes.pkl')
-df_specs = pd.read_pickle('03_df_specs.pkl')
-    
-df_infoboxes.columns = [convert_to_snake(col) for col in df_infoboxes.columns]
-df_specs.columns = [convert_to_snake(col) for col in df_specs.columns]
 
 def combine_columns(df,cols):
+    """Combines multiple columns (which are usually the same data
+    just with a different column header"""
     df[cols[0]] = df[cols].ffill(axis=1).iloc[:,-1]
     df.drop(cols[1:],axis=1,inplace=True)
     return(df)    
 
+#------------------------------------------------------------------
+# Main code block
+
+# Read data from previous file
+df_infoboxes = pd.read_pickle('Script_Data/03_df_infoboxes.pkl')
+df_specs = pd.read_pickle('Script_Data/03_df_specs.pkl')
+    
+# Update column names
+df_infoboxes.columns = [convert_to_snake(col) for col in df_infoboxes.columns]
+df_specs.columns = [convert_to_snake(col) for col in df_specs.columns]
+
+# Combine columns which contain the same data with different column headers
 df_specs = combine_columns(df_specs,['cruise_speed','cruising_speed'])
 df_specs = combine_columns(df_specs,['max_takeoff_weight',
                                      'max._takeoff_weight'])
@@ -168,10 +173,6 @@ df_infoboxes = combine_columns(df_infoboxes,['primary_users','primary_user'])
 df_infoboxes = combine_columns(df_infoboxes,['national_origin','country',
                                              'country_of_origin'])
 
-
-#df_infoboxes.columns = list(df_infoboxes.columns).index('in_service')] = 'in_service2'
-#
-#df_infoboxes['in_service'] = df_infoboxes.combine_first(')
 
 # Fixing df_specs
 lengths = ['wingspan','length','height','service_ceiling']
@@ -200,147 +201,16 @@ for date in dates:
     label = date + '_date'
     df_infoboxes[label] = fix_dates(df_infoboxes[date])
 
-
 us_list = ['UNITED STATES OF AMERICA','AMERICA','UNITED STATES OF AMERICA (USA)',
            'USA','US','U.S.','U.S.A','U.S.A.']
-
 df_infoboxes['national_origin'] = (df_infoboxes['national_origin']
         .replace(us_list,'UNITED STATES'))
 
 ussr_list = ['USSR','U.S.S.R.']
-
 df_infoboxes['national_origin'] = (df_infoboxes['national_origin']
         .replace(ussr_list,'SOVIET UNION'))
-
-#aa = pd.DataFrame(df_infoboxes['role'].value_counts()).reset_index()
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Save dataframes to pickles for next script
 df_infoboxes.to_pickle('Script_Data/04_df_infoboxes.pkl')
-df_specs.to_pickle('Script_Data/04_df_specs.pkl')
-
-
-
-
-
-#
-#cc = pd.DataFrame(s)
-#cc['date1'] = pd.to_datetime(cc['first_flight'],errors='coerce')
-#cc['first_flight2'] = cc[cc['date1'].isnull()]['first_flight']
-#
-#year = '(\d{4})'
-#cc['date2'] = cc['first_flight2'].str.extract(year)
-#cc['date3'] = pd.to_datetime(cc['date2'])
-#
-#cc = combine_columns(cc,['date1','date3'])
-#
-#print('nulls: ',cc['date1'].isnull().sum())
-
-
-
-
-#punctuations = '(?:;|"|\+)*'
-#years_ago = '\;*\s*\d+\s*years\s*ago\s*'
-#c_start = 'c\.\s*'
-#ca_start = 'ca\.\s*'
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#df_f = df_infoboxes[['first_flight']]
-#df_f['first_flight_date'] = pd.to_datetime(df_infoboxes['first_flight'])
-
-
-
-
-
-
-
-
-
-#df_specs['max_takeoff_weight'] = (df_specs['max_takeoff_weight']
-#                                  .combine_first(df_specs['max._takeoff_weight']))
-#df_specs.drop('max._takeoff_weight',axis=1,inplace=True)
-#
-#df_specs['max_landing_weight'] = (df_specs['max_landing_weight']
-#                                 .combine_first(df_specs['maximum_landing_weight'])
-#                                 .combine_first(df_specs['landing_weight']))
-#df_specs.drop(['maximum_landing_weight','landing_weight'],axis=1,inplace=True)
-
-
-
-
-
-
-
-
-##df_specs['wingspan_ft'] = data_cleaning.fix_lengths(list(df_specs['wingspan'].astype('O').str.lower()))
-#
-#s = df_specs['wingspan']
-#
-##a = s.str.extract(r'(\d+\.?\d*)\s*ft\s*(?:(\d+\.?\d*)\s*in)*')
-
-
-
-
-
-
-
-
-
-
-#s = s.astype(str)
-#s = s.str.lower()
-
-#a = vals[vals.isnull().all(1)]
-#a = s[vals.isnull().all(1)]
-
-
-
-
-
-
-
-
-
-
+df_specs.to_pickle('Script_Data/04_df_specs.pkl')    
