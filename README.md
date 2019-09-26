@@ -10,3 +10,6 @@ For this independent project, I did exploratory analysis on the aircraft acciden
 
 #### Map of General Aviation Aircraft Accidents
 I also created an interactive map of general aviation aircraft accidents. Here is the [script](https://github.com/thwhitfield/Data_Science_Portfolio/blob/master/General%20Aviation%20Aircraft%20Accident%20Analysis/Mapping_General_Aviation_Aircraft_Accidents.ipynb) to produce the map, and here is the [map](https://github.com/thwhitfield/Data_Science_Portfolio/blob/master/General%20Aviation%20Aircraft%20Accident%20Analysis/General_Aviation_Accident_Map_2010_to_present.html) itself.
+
+### All Aircraft Database - Web Scraping and Recommender System
+For this independent project, I wanted to create a sortable, filterable, and searchable database of all aircraft designs. I believe this is the first free database of that type online. To create the database, I scraped the aircraft specifications and wikipedia page content for all the aircraft listed on wikipedia, parsed that data, and created a database with it. I uploaded that database to this github page. I also created a specification based aircraft recommendation system, such that given an aircraft the system will return aircraft of similar specifications. 
