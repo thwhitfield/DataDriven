@@ -272,6 +272,7 @@ df_event_dictionary = df_data_dictionary[df_data_dictionary['Table']=='events']
 df_aircraft_dictionary = df_data_dictionary[df_data_dictionary['Table']=='aircraft']
 df_findings_dictionary = df_data_dictionary[df_data_dictionary['Table']=='Findings']
 df_narratives_dictionary = df_data_dictionary[df_data_dictionary['Table']=='narratives']
+df_occurrences_dictionary = df_data_dictionary[df_data_dictionary['Table'] == 'Occurrences']
 
 df1 = df_data_dictionary[df_data_dictionary['Table'] == 'flight_time']
 
@@ -282,5 +283,5 @@ df2_flight_time = df2_flight_time[df2_flight_time['flight_hours'] < 50000]
 
 df_occurences = df_occurences[(df_occurences['Aircraft_Key']==1) & (df_occurences['Occurrence_No'] == 1)]
 
-df_airmen_stats = pd.read_excel(r'C:\Users\thwhi\Dropbox\Personal\Programming\Misc Practice\2018-civil-airmen-stats.xlsx')
-xls = pd.ExcelFile(r'C:\Users\thwhi\Dropbox\Personal\Programming\Misc Practice\2018-civil-airmen-stats.xlsx')
+#df_airmen_stats = pd.read_excel(r'C:\Users\thwhi\Dropbox\Personal\Programming\Misc Practice\2018-civil-airmen-stats.xlsx')
+#xls = pd.ExcelFile(r'C:\Users\thwhi\Dropbox\Personal\Programming\Misc Practice\2018-civil-airmen-stats.xlsx')
